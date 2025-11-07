@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://blj5g47uwo7m0"]
+[gd_scene load_steps=8 format=3 uid="uid://blj5g47uwo7m0"]
 
-[ext_resource type="Script" path="res://scenes/main.gd" id="1_5g6v2"]
+[ext_resource type="Script" uid="uid://c2voik2e2oh0w" path="res://scenes/main.gd" id="1_5g6v2"]
 [ext_resource type="Texture2D" uid="uid://d38ceuoo614k4" path="res://assets/bg.png" id="1_s2jh7"]
 [ext_resource type="PackedScene" uid="uid://cr3pl7yfk32tb" path="res://scenes/pipe.tscn" id="2_h58j0"]
 [ext_resource type="PackedScene" uid="uid://b6xt1pam4caki" path="res://scenes/bird.tscn" id="3_4ap2d"]
 [ext_resource type="PackedScene" uid="uid://d2ort7tfi33lg" path="res://scenes/ground.tscn" id="4_kx1e6"]
 [ext_resource type="PackedScene" uid="uid://snrvq7jkapgf" path="res://scenes/game_over.tscn" id="6_yk7bg"]
+[ext_resource type="PackedScene" uid="uid://d1r2pesmoi04c" path="res://scenes/coins.tscn" id="7_o6xl0"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_5g6v2")
@@ -36,6 +37,16 @@ theme_override_font_sizes/font_size = 40
 text = "SCORE: 0"
 
 [node name="GameOver" parent="." instance=ExtResource("6_yk7bg")]
+
+[node name="Coins" parent="." instance=ExtResource("7_o6xl0")]
+
+[node name="CoinsLabel" type="Label" parent="."]
+offset_left = 584.0
+offset_right = 628.0
+offset_bottom = 113.0
+theme_override_font_sizes/font_size = 40
+text = ": 0
+"
 
 [connection signal="hit" from="Ground" to="." method="_on_ground_hit"]
 [connection signal="timeout" from="PipeTimer" to="." method="_on_pipe_timer_timeout"]

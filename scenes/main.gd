@@ -6,6 +6,7 @@ var game_running : bool
 var game_over : bool
 var scroll
 var score
+var coins
 const SCROLL_SPEED : int = 4
 var screen_size : Vector2i
 var ground_height : int
@@ -25,7 +26,9 @@ func new_game():
 	game_over = false
 	score = 0
 	scroll = 0
+	coins = 0
 	$ScoreLabel.text = "SCORE: " + str(score)
+	$CoinsLabel.text = ": " + str(coins)
 	$GameOver.hide()
 	get_tree().call_group("pipes", "queue_free")
 	pipes.clear()
@@ -74,12 +77,16 @@ func generate_pipes():
 	pipe.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
 	pipe.hit.connect(bird_hit)
 	pipe.scored.connect(scored)
+	#pipe.score.connect(coins)
 	add_child(pipe)
 	pipes.append(pipe)
 	
 func scored():
 	score += 1
+	coins += 3
 	$ScoreLabel.text = "SCORE: " + str(score)
+	$CoinsLabel.text = ": " + str(coins)
+
 
 func check_top():
 	if $Bird.position.y < 0:
