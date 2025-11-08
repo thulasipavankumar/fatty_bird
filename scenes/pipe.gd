@@ -4,8 +4,7 @@ signal hit
 signal scored
 
 func _on_body_entered(body):
-	return
-	#hit.emit()
+	hit.emit()
 
 func _on_score_area_body_entered(body):
 	scored.emit()

@@ -36,8 +36,8 @@ func new_game():
 	$CoinsLabel.text = ": " + str(coins)
 	$GameOver.hide()
 	get_tree().call_group("pipes", "queue_free")
-	#get_tree().call_group("foods", "queue_free")
-	#get_tree().call_group("foods", "medicines")
+	get_tree().call_group("foods", "queue_free")
+	get_tree().call_group("medicines", "queue_free")
 	pipes.clear()
 	foods.clear()
 	medicines.clear()
@@ -62,8 +62,8 @@ func start_game():
 	game_running = true
 	$Bird.flying = true
 	$Bird.flap()
-	#start pipe timer
-	$PipeTimer.start()
+	#start timer
+	start_timers()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -85,19 +85,13 @@ func _process(delta):
 
 func _on_pipe_timer_timeout():
 	generate_pipes()
-	generate_medicines()
-	generate_foods()
-	
-	
 
 func _on_food_timer_timeout() -> void:
-	#generate_foods()
+	generate_foods()
 	pass
-	 # Replace with function body.
-
-
+	
 func _on_medicine_timer_timeout() -> void:
-	#generate_medicines()
+	generate_medicines()
 	pass
 
 func generate_pipes():
@@ -139,11 +133,22 @@ func check_top():
 		stop_game()
 
 func stop_game():
-	$PipeTimer.stop()
+	stop_timers()
 	$GameOver.show()
 	$Bird.flying = false
 	game_running = false
 	game_over = true
+	
+func stop_timers():
+	$PipeTimer.stop()
+	$FoodTimer.stop()
+	$MedicineTimer.stop()
+
+func start_timers():
+	$PipeTimer.start()
+	$FoodTimer.start()
+	$MedicineTimer.start()
+	
 	
 func bird_hit():
 	$Bird.falling = true

@@ -23,40 +23,41 @@ height = 40.0
 radius = 16.0
 height = 38.0
 
-[node name="Food" type="Area2D"]
+[node name="Food" type="Area2D" groups=["foods"]]
 script = ExtResource("1_p8t0w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 1)
+position = Vector2(54, 35)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_ufjn6")
 
 [node name="cheese" type="Sprite2D" parent="."]
+position = Vector2(55, 35)
 texture = ExtResource("1_qjm1k")
 
 [node name="burger" type="Sprite2D" parent="."]
-position = Vector2(163, 86)
+position = Vector2(552, 42)
 texture = ExtResource("2_p8t0w")
 
 [node name="croissant" type="Sprite2D" parent="."]
-position = Vector2(88, -1)
+position = Vector2(486, 341)
 texture = ExtResource("3_14bb5")
 
 [node name="cake" type="Sprite2D" parent="."]
-position = Vector2(101, 56)
+position = Vector2(231, 196)
 texture = ExtResource("4_7b0y3")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(163, 86)
+position = Vector2(551, 41)
 shape = SubResource("CapsuleShape2D_qjm1k")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
-position = Vector2(90, -1)
+position = Vector2(488, 340)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_p8t0w")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
-position = Vector2(100, 57)
+position = Vector2(230, 198)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_14bb5")
 

@@ -32,7 +32,6 @@ script = ExtResource("1_jmxwj")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_xn4pq")
 animation = &"flying"
-frame_progress = 0.98573816
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 rotation = 1.5708

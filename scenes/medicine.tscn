@@ -16,7 +16,7 @@ height = 42.0
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6xbp7"]
 height = 42.0
 
-[node name="Medicine" type="Area2D"]
+[node name="Medicine" type="Area2D" groups=["medicines"]]
 script = ExtResource("1_nmuip")
 
 [node name="pill" type="Sprite2D" parent="."]
@@ -32,19 +32,19 @@ scale = Vector2(0.056640666, 0.07466168)
 shape = SubResource("CapsuleShape2D_flq4e")
 
 [node name="greenpotion" type="Sprite2D" parent="."]
-position = Vector2(117.727295, 317.45456)
+position = Vector2(174, 381)
 texture = ExtResource("3_6lrcq")
 
 [node name="redpotion" type="Sprite2D" parent="."]
-position = Vector2(243.00024, 30.265594)
+position = Vector2(689, 287)
 texture = ExtResource("4_472br")
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
-position = Vector2(118, 319)
+position = Vector2(174, 382)
 shape = SubResource("CapsuleShape2D_mawa1")
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
-position = Vector2(243, 31)
+position = Vector2(690, 287)
 shape = SubResource("CapsuleShape2D_6xbp7")
 
 [node name="recover_sound" type="AudioStreamPlayer" parent="."]

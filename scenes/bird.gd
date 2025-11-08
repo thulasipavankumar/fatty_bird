@@ -15,6 +15,7 @@ func _ready():
 	reset()
 
 func reset():
+	scale *= 0.5
 	falling = false
 	flying = false
 	position = START_POS
@@ -22,8 +23,7 @@ func reset():
 	set_rotation(0)
 
 func scale_up():
-	print("Fattening bouyyyy")
-	scale = scale * 1.25
+	scale *= 1.25
 	pass
 	
 func reset_scale_character():
@@ -31,7 +31,6 @@ func reset_scale_character():
 	pass
 	
 func scale_down():
-	print("Dieting mode activate")
 	if(scale.x >= 0.40 and scale.y >= 0.40):
 		scale = scale * 0.8
 	pass
