@@ -12,26 +12,7 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	print("Entered Body")
 	hit.emit()
 	pass # Replace with function body.
 
-#
-#func _on_cheese_area_body_entered(body: Node2D) -> void:
-	#print("Eaten Cheese")
-	#pass # Replace with function body.
-#
-#
-#func _on_burger_area_body_entered(body: Node2D) -> void:
-	#print("Eaten burger")
-	#pass # Replace with function body.
-#
-#
-#func _on_croissant_area_body_entered(body: Node2D) -> void:
-	#print("Eaten croissant")
-	#pass # Replace with function body.
-#
-#
-#func _on_cake_area_body_entered(body: Node2D) -> void:
-	#print("Eaten cake")
-	#pass # Replace with function body.
+ # Replace with function body.

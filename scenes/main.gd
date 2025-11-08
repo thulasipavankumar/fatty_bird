@@ -2,6 +2,8 @@ extends Node
 
 @export var pipe_scene : PackedScene
 @export var food_scene : PackedScene
+@export var medicine_scene : PackedScene
+
 
 var game_running : bool
 var game_over : bool
@@ -13,6 +15,7 @@ var screen_size : Vector2i
 var ground_height : int
 var pipes : Array
 var foods: Array
+var medicines: Array
 const PIPE_DELAY : int = 100
 const PIPE_RANGE : int = 200
 
@@ -33,10 +36,15 @@ func new_game():
 	$CoinsLabel.text = ": " + str(coins)
 	$GameOver.hide()
 	get_tree().call_group("pipes", "queue_free")
+	get_tree().call_group("foods", "queue_free")
+	get_tree().call_group("foods", "medicines")
 	pipes.clear()
 	foods.clear()
+	medicines.clear()
 	#generate starting pipes
 	generate_pipes()
+	generate_foods()
+	generate_medicines()
 	$Bird.reset()
 	
 func _input(event):
@@ -71,11 +79,14 @@ func _process(delta):
 			pipe.position.x -= SCROLL_SPEED
 		for food in foods:
 			food.position.x -= SCROLL_SPEED
+		for medicine in medicines:
+			medicine.position.x -= SCROLL_SPEED	
 
 
 func _on_pipe_timer_timeout():
 	generate_pipes()
 	generate_foods()
+	generate_medicines()
 	
 func generate_pipes():
 	var pipe = pipe_scene.instantiate()
@@ -91,10 +102,20 @@ func generate_foods():
 	var food = food_scene.instantiate()
 	food.position.x = screen_size.x + PIPE_DELAY
 	food.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
-	#food.hit.connect(bird_hit)
+	food.hit.connect(bird_eats)
 	add_child(food)
 	foods.append(food)
 	pass
+
+func generate_medicines():
+	var medicine = medicine_scene.instantiate()
+	medicine.position.x = screen_size.x + PIPE_DELAY
+	medicine.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
+	medicine.hit.connect(bird_recovers)
+	add_child(medicine)
+	medicines.append(medicine)
+	pass
+	
 	
 func scored():
 	score += 1
@@ -120,9 +141,11 @@ func bird_hit():
 	stop_game()
 	
 func bird_eats():
+	$Bird.scale_up()
 	pass
 	
 func bird_recovers():
+	$Bird.scale_down()
 	pass
 
 func _on_ground_hit():

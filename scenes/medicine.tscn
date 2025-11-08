@@ -1,23 +1,49 @@
-[gd_scene load_steps=4 format=3 uid="uid://6abmpxwjk5xr"]
+[gd_scene load_steps=8 format=3 uid="uid://6abmpxwjk5xr"]
 
 [ext_resource type="Script" uid="uid://c8xfybmtn1qve" path="res://scenes/medicine.gd" id="1_nmuip"]
 [ext_resource type="Texture2D" uid="uid://dsi5sjensfwus" path="res://assets/pill.png" id="2_r8o0g"]
+[ext_resource type="Texture2D" uid="uid://c6vv4b6pnarn3" path="res://assets/green-potion.png" id="3_6lrcq"]
+[ext_resource type="Texture2D" uid="uid://cc2omsdk3sbxf" path="res://assets/red-potion.png" id="4_472br"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_flq4e"]
 radius = 196.0
 height = 852.60156
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mawa1"]
+height = 42.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6xbp7"]
+height = 42.0
+
 [node name="Medicine" type="Area2D"]
-position = Vector2(50, 150)
 script = ExtResource("1_nmuip")
 
 [node name="pill" type="Sprite2D" parent="."]
 z_index = 1
-position = Vector2(446.77325, 362)
+position = Vector2(440, 164.00002)
 scale = Vector2(0.07466168, 0.056640666)
 texture = ExtResource("2_r8o0g")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="pill"]
-position = Vector2(0, -24)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(440, 162.00002)
 rotation = 1.5707964
+scale = Vector2(0.056640666, 0.07466168)
 shape = SubResource("CapsuleShape2D_flq4e")
+
+[node name="greenpotion" type="Sprite2D" parent="."]
+position = Vector2(117.727295, 317.45456)
+texture = ExtResource("3_6lrcq")
+
+[node name="redpotion" type="Sprite2D" parent="."]
+position = Vector2(243.00024, 30.265594)
+texture = ExtResource("4_472br")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(118, 319)
+shape = SubResource("CapsuleShape2D_mawa1")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(243, 31)
+shape = SubResource("CapsuleShape2D_6xbp7")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
