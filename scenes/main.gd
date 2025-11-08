@@ -7,6 +7,7 @@ extends Node
 
 var game_running : bool
 var game_over : bool
+var instruction_required: bool = true
 var scroll
 var score
 var coins
@@ -24,8 +25,15 @@ func _ready():
 	screen_size = get_window().size
 	ground_height = $Ground.get_node("Sprite2D").texture.get_height()
 	new_game()
-
+	
+func check_show_instructions():
+	if instruction_required == true:
+		$Instructions.show()
+	else:
+		$Instructions.hide()
+	
 func new_game():
+	check_show_instructions()
 	#reset variables
 	game_running = false
 	game_over = false
@@ -42,16 +50,19 @@ func new_game():
 	foods.clear()
 	medicines.clear()
 	#generate starting pipes
+	generate_assets()
+	$Bird.reset()
+	
+func generate_assets():
 	generate_pipes()
 	generate_foods()
 	generate_medicines()
-	$Bird.reset()
 	
 func _input(event):
-	if game_over == false:
+	if game_over == false && instruction_required == false:
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-				if game_running == false:
+				if  game_running == false:
 					start_game()
 				else:
 					if $Bird.flying:
@@ -64,7 +75,7 @@ func start_game():
 	$Bird.flap()
 	#start timer
 	start_timers()
-
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if game_running:
@@ -169,3 +180,9 @@ func _on_ground_hit():
 
 func _on_game_over_restart():
 	new_game()
+
+
+func _on_instructions_instructions() -> void:
+	instruction_required = false
+	new_game()
+	pass # Replace with function body.
