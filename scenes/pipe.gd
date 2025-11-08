@@ -2,7 +2,6 @@ extends Area2D
 
 signal hit
 signal scored
-signal coins
 
 func _on_body_entered(body):
 	return
@@ -10,4 +9,3 @@ func _on_body_entered(body):
 
 func _on_score_area_body_entered(body):
 	scored.emit()
-	coins.emit()

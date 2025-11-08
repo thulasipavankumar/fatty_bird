@@ -1,0 +1,63 @@
+[gd_scene load_steps=10 format=3 uid="uid://pq16ld3tc264"]
+
+[ext_resource type="Script" uid="uid://b5pdq4l4u30nm" path="res://scenes/food.gd" id="1_p8t0w"]
+[ext_resource type="Texture2D" uid="uid://bd4o4618alttg" path="res://assets/Cheese.png" id="1_qjm1k"]
+[ext_resource type="Texture2D" uid="uid://koad783mhduv" path="res://assets/Burger.png" id="2_p8t0w"]
+[ext_resource type="Texture2D" uid="uid://e21aqlw3opq8" path="res://assets/Croissant.png" id="3_14bb5"]
+[ext_resource type="Texture2D" uid="uid://c2o87uqq8bhcq" path="res://assets/Strawberry cake.png" id="4_7b0y3"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ufjn6"]
+radius = 14.000008
+height = 42.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qjm1k"]
+radius = 16.0
+height = 34.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p8t0w"]
+radius = 11.999992
+height = 40.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_14bb5"]
+radius = 16.0
+height = 38.0
+
+[node name="Food" type="Area2D"]
+position = Vector2(50, 150)
+script = ExtResource("1_p8t0w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 1)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_ufjn6")
+
+[node name="cheese" type="Sprite2D" parent="."]
+texture = ExtResource("1_qjm1k")
+
+[node name="burger" type="Sprite2D" parent="."]
+position = Vector2(163, 86)
+texture = ExtResource("2_p8t0w")
+
+[node name="croissant" type="Sprite2D" parent="."]
+position = Vector2(88, -1)
+texture = ExtResource("3_14bb5")
+
+[node name="cake" type="Sprite2D" parent="."]
+position = Vector2(101, 56)
+texture = ExtResource("4_7b0y3")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="."]
+position = Vector2(163, 86)
+shape = SubResource("CapsuleShape2D_qjm1k")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="."]
+position = Vector2(90, -1)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_p8t0w")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="."]
+position = Vector2(100, 57)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_14bb5")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

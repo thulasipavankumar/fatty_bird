@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://6abmpxwjk5xr"]
+
+[ext_resource type="Script" uid="uid://c8xfybmtn1qve" path="res://scenes/medicine.gd" id="1_nmuip"]
+[ext_resource type="Texture2D" uid="uid://dsi5sjensfwus" path="res://assets/pill.png" id="2_r8o0g"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_flq4e"]
+radius = 196.0
+height = 852.60156
+
+[node name="Medicine" type="Area2D"]
+position = Vector2(50, 150)
+script = ExtResource("1_nmuip")
+
+[node name="pill" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(446.77325, 362)
+scale = Vector2(0.07466168, 0.056640666)
+texture = ExtResource("2_r8o0g")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pill"]
+position = Vector2(0, -24)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_flq4e")
