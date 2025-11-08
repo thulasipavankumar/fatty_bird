@@ -3,7 +3,7 @@ extends Node
 @export var pipe_scene : PackedScene
 @export var food_scene : PackedScene
 @export var medicine_scene : PackedScene
-
+@onready var player_hit_sound: AudioStreamPlayer = $player_hit
 
 var game_running : bool
 var game_over : bool
@@ -151,6 +151,7 @@ func start_timers():
 	
 	
 func bird_hit():
+	player_hit_sound.play()
 	$Bird.falling = true
 	stop_game()
 	
