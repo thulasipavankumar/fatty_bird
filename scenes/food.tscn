@@ -23,7 +23,6 @@ radius = 16.0
 height = 38.0
 
 [node name="Food" type="Area2D"]
-position = Vector2(50, 150)
 script = ExtResource("1_p8t0w")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

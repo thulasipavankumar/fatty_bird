@@ -23,8 +23,7 @@ func reset():
 
 func scale_up():
 	print("Fattening bouyyyy")
-	var current_scale = scale
-	#scale = current_scale * 1.25
+	scale = scale * 1.25
 	pass
 	
 func reset_scale_character():
@@ -33,7 +32,6 @@ func reset_scale_character():
 	
 func scale_down():
 	print("Dieting mode activate")
-	var target_scale = scale / 1.20
 	if(scale.x >= 0.40 and scale.y >= 0.40):
 		scale = scale * 0.8
 	pass

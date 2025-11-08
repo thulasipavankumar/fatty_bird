@@ -1,6 +1,6 @@
 extends Area2D
 
-signal hit
+signal recover
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -8,5 +8,5 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	hit.emit()
+	recover.emit()
 	pass # Replace with function body.

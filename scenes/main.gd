@@ -36,8 +36,8 @@ func new_game():
 	$CoinsLabel.text = ": " + str(coins)
 	$GameOver.hide()
 	get_tree().call_group("pipes", "queue_free")
-	get_tree().call_group("foods", "queue_free")
-	get_tree().call_group("foods", "medicines")
+	#get_tree().call_group("foods", "queue_free")
+	#get_tree().call_group("foods", "medicines")
 	pipes.clear()
 	foods.clear()
 	medicines.clear()
@@ -85,16 +85,27 @@ func _process(delta):
 
 func _on_pipe_timer_timeout():
 	generate_pipes()
-	generate_foods()
 	generate_medicines()
+	generate_foods()
 	
+	
+
+func _on_food_timer_timeout() -> void:
+	#generate_foods()
+	pass
+	 # Replace with function body.
+
+
+func _on_medicine_timer_timeout() -> void:
+	#generate_medicines()
+	pass
+
 func generate_pipes():
 	var pipe = pipe_scene.instantiate()
 	pipe.position.x = screen_size.x + PIPE_DELAY
 	pipe.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
 	pipe.hit.connect(bird_hit)
 	pipe.scored.connect(scored)
-	#pipe.score.connect(coins)
 	add_child(pipe)
 	pipes.append(pipe)
 
@@ -102,7 +113,7 @@ func generate_foods():
 	var food = food_scene.instantiate()
 	food.position.x = screen_size.x + PIPE_DELAY
 	food.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
-	food.hit.connect(bird_eats)
+	food.eat.connect(bird_eats)
 	add_child(food)
 	foods.append(food)
 	pass
@@ -111,18 +122,16 @@ func generate_medicines():
 	var medicine = medicine_scene.instantiate()
 	medicine.position.x = screen_size.x + PIPE_DELAY
 	medicine.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
-	medicine.hit.connect(bird_recovers)
+	medicine.recover.connect(bird_recovers)
 	add_child(medicine)
 	medicines.append(medicine)
 	pass
-	
 	
 func scored():
 	score += 1
 	coins += 3
 	$ScoreLabel.text = "SCORE: " + str(score)
 	$CoinsLabel.text = ": " + str(coins)
-
 
 func check_top():
 	if $Bird.position.y < 0:
