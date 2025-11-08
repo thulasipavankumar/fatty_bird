@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://blj5g47uwo7m0"]
+[gd_scene load_steps=11 format=3 uid="uid://blj5g47uwo7m0"]
 
 [ext_resource type="Script" uid="uid://c2voik2e2oh0w" path="res://scenes/main.gd" id="1_5g6v2"]
 [ext_resource type="Texture2D" uid="uid://d38ceuoo614k4" path="res://assets/bg.png" id="1_s2jh7"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://d1r2pesmoi04c" path="res://scenes/coins.tscn" id="7_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://pq16ld3tc264" path="res://scenes/food.tscn" id="8_tipki"]
 [ext_resource type="PackedScene" uid="uid://6abmpxwjk5xr" path="res://scenes/medicine.tscn" id="9_85g3d"]
+[ext_resource type="AudioStream" uid="uid://47dorkxgly5v" path="res://assets/sounds/background.mp3" id="10_choun"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_5g6v2")
@@ -63,6 +64,12 @@ wait_time = 2.0
 
 [node name="MedicineTimer" type="Timer" parent="."]
 wait_time = 2.5
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_choun")
+volume_db = -10.496
+autoplay = true
+parameters/looping = false
 
 [connection signal="hit" from="Ground" to="." method="_on_ground_hit"]
 [connection signal="timeout" from="PipeTimer" to="." method="_on_pipe_timer_timeout"]
