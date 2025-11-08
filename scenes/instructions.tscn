@@ -1,0 +1,114 @@
+[gd_scene load_steps=14 format=3 uid="uid://d4auwetbv5jxv"]
+
+[ext_resource type="Texture2D" uid="uid://cwaim040e72rl" path="res://assets/start.png" id="1_dkfqi"]
+[ext_resource type="Script" uid="uid://b2caen8iosjfa" path="res://scenes/instructions.gd" id="1_nisbi"]
+[ext_resource type="Texture2D" uid="uid://koad783mhduv" path="res://assets/Burger.png" id="3_olnwl"]
+[ext_resource type="Texture2D" uid="uid://bd4o4618alttg" path="res://assets/Cheese.png" id="4_i5xgr"]
+[ext_resource type="Texture2D" uid="uid://e21aqlw3opq8" path="res://assets/Croissant.png" id="5_jxpsd"]
+[ext_resource type="Texture2D" uid="uid://c6vv4b6pnarn3" path="res://assets/green-potion.png" id="6_gvtqk"]
+[ext_resource type="Texture2D" uid="uid://cc2omsdk3sbxf" path="res://assets/red-potion.png" id="7_iilnc"]
+[ext_resource type="Texture2D" uid="uid://dsi5sjensfwus" path="res://assets/pill.png" id="8_lxjvu"]
+[ext_resource type="Texture2D" uid="uid://cqrbqw33pbtpw" path="res://assets/pizza.png" id="9_klb3h"]
+[ext_resource type="Texture2D" uid="uid://cxp8rk38243di" path="res://assets/left-click.png" id="10_i5xgr"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nisbi"]
+texture = ExtResource("1_dkfqi")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_njqp3"]
+texture = ExtResource("1_dkfqi")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c00ax"]
+texture = ExtResource("1_dkfqi")
+
+[node name="Instructions" type="CanvasLayer"]
+script = ExtResource("1_nisbi")
+
+[node name="StartButton" type="Button" parent="."]
+offset_left = 342.0
+offset_top = 400.0
+offset_right = 497.0
+offset_bottom = 440.63
+theme_override_styles/normal = SubResource("StyleBoxTexture_nisbi")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_njqp3")
+theme_override_styles/hover = SubResource("StyleBoxTexture_c00ax")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = 320.0
+offset_top = 116.0
+offset_right = 505.48407
+offset_bottom = 156.0
+theme_override_font_sizes/normal_font_size = 20
+theme_override_font_sizes/bold_font_size = 16
+text = "Items"
+horizontal_alignment = 1
+
+[node name="food3" type="Sprite2D" parent="."]
+position = Vector2(345.684, 214)
+texture = ExtResource("3_olnwl")
+
+[node name="food" type="Sprite2D" parent="."]
+position = Vector2(347.216, 256)
+texture = ExtResource("4_i5xgr")
+
+[node name="food2" type="Sprite2D" parent="."]
+position = Vector2(349.416, 295)
+texture = ExtResource("5_jxpsd")
+
+[node name="potion" type="Sprite2D" parent="."]
+position = Vector2(486, 214)
+texture = ExtResource("6_gvtqk")
+
+[node name="potion2" type="Sprite2D" parent="."]
+position = Vector2(486, 256)
+texture = ExtResource("7_iilnc")
+
+[node name="potion3" type="Sprite2D" parent="."]
+position = Vector2(488, 295)
+scale = Vector2(0.04418552, 0.05609338)
+texture = ExtResource("8_lxjvu")
+
+[node name="food4" type="Sprite2D" parent="."]
+position = Vector2(350, 336)
+scale = Vector2(0.15524238, 0.18097338)
+texture = ExtResource("9_klb3h")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 327.0
+offset_top = 150.0
+offset_right = 367.0
+offset_bottom = 173.0
+text = "Food"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 457.0
+offset_top = 150.0
+offset_right = 516.0
+offset_bottom = 173.0
+text = "Potions"
+
+[node name="Label3" type="Label" parent="."]
+offset_left = 277.0
+offset_top = 171.0
+offset_right = 413.0
+offset_bottom = 194.0
+text = "(Makes you grow)"
+
+[node name="Label4" type="Label" parent="."]
+offset_left = 430.0
+offset_top = 171.0
+offset_right = 569.0
+offset_bottom = 194.0
+text = "(Makes you small)"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(382, 380.669)
+texture = ExtResource("10_i5xgr")
+
+[node name="Label5" type="Label" parent="."]
+offset_left = 325.0
+offset_top = 368.0
+offset_right = 524.0
+offset_bottom = 397.05783
+text = "Press        to flap the bird  "
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
