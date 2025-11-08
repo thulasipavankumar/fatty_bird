@@ -1,15 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://blj5g47uwo7m0"]
+[gd_scene load_steps=10 format=3 uid="uid://blj5g47uwo7m0"]
 
-[ext_resource type="Script" path="res://scenes/main.gd" id="1_5g6v2"]
+[ext_resource type="Script" uid="uid://c2voik2e2oh0w" path="res://scenes/main.gd" id="1_5g6v2"]
 [ext_resource type="Texture2D" uid="uid://d38ceuoo614k4" path="res://assets/bg.png" id="1_s2jh7"]
 [ext_resource type="PackedScene" uid="uid://cr3pl7yfk32tb" path="res://scenes/pipe.tscn" id="2_h58j0"]
 [ext_resource type="PackedScene" uid="uid://b6xt1pam4caki" path="res://scenes/bird.tscn" id="3_4ap2d"]
 [ext_resource type="PackedScene" uid="uid://d2ort7tfi33lg" path="res://scenes/ground.tscn" id="4_kx1e6"]
 [ext_resource type="PackedScene" uid="uid://snrvq7jkapgf" path="res://scenes/game_over.tscn" id="6_yk7bg"]
+[ext_resource type="PackedScene" uid="uid://d1r2pesmoi04c" path="res://scenes/coins.tscn" id="7_o6xl0"]
+[ext_resource type="PackedScene" uid="uid://pq16ld3tc264" path="res://scenes/food.tscn" id="8_tipki"]
+[ext_resource type="PackedScene" uid="uid://6abmpxwjk5xr" path="res://scenes/medicine.tscn" id="9_85g3d"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_5g6v2")
 pipe_scene = ExtResource("2_h58j0")
+food_scene = ExtResource("8_tipki")
+medicine_scene = ExtResource("9_85g3d")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture = ExtResource("1_s2jh7")
@@ -37,6 +42,30 @@ text = "SCORE: 0"
 
 [node name="GameOver" parent="." instance=ExtResource("6_yk7bg")]
 
+[node name="Coins" parent="." instance=ExtResource("7_o6xl0")]
+
+[node name="CoinsLabel" type="Label" parent="."]
+z_index = 1
+offset_left = 584.0
+offset_right = 628.0
+offset_bottom = 113.0
+theme_override_font_sizes/font_size = 40
+text = ": 0
+"
+
+[node name="Food" parent="." instance=ExtResource("8_tipki")]
+position = Vector2(634, 150)
+
+[node name="Medicine" parent="." instance=ExtResource("9_85g3d")]
+
+[node name="FoodTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="MedicineTimer" type="Timer" parent="."]
+wait_time = 2.5
+
 [connection signal="hit" from="Ground" to="." method="_on_ground_hit"]
 [connection signal="timeout" from="PipeTimer" to="." method="_on_pipe_timer_timeout"]
 [connection signal="restart" from="GameOver" to="." method="_on_game_over_restart"]
+[connection signal="timeout" from="FoodTimer" to="." method="_on_food_timer_timeout"]
+[connection signal="timeout" from="MedicineTimer" to="." method="_on_medicine_timer_timeout"]

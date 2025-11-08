@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d1r2pesmoi04c"]
+
+[ext_resource type="Texture2D" uid="uid://cdgx3j6t2kahv" path="res://assets/coin.png" id="1_0wmmx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0wmmx"]
+
+[node name="Coins" type="Area2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+position = Vector2(570, 31)
+texture = ExtResource("1_0wmmx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(614, 20)
+shape = SubResource("RectangleShape2D_0wmmx")

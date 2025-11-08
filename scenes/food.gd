@@ -1,0 +1,15 @@
+extends Area2D
+@onready var eat_music: AudioStreamPlayer = $eat_sound
+
+signal eat
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+func _on_body_entered(body: Node2D) -> void:
+	eat.emit()
+	eat_music.play()
+	pass # Replace with function body.
+
+ # Replace with function body.

@@ -1,15 +1,21 @@
 extends Node
 
 @export var pipe_scene : PackedScene
+@export var food_scene : PackedScene
+@export var medicine_scene : PackedScene
+
 
 var game_running : bool
 var game_over : bool
 var scroll
 var score
+var coins
 const SCROLL_SPEED : int = 4
 var screen_size : Vector2i
 var ground_height : int
 var pipes : Array
+var foods: Array
+var medicines: Array
 const PIPE_DELAY : int = 100
 const PIPE_RANGE : int = 200
 
@@ -25,12 +31,20 @@ func new_game():
 	game_over = false
 	score = 0
 	scroll = 0
+	coins = 0
 	$ScoreLabel.text = "SCORE: " + str(score)
+	$CoinsLabel.text = ": " + str(coins)
 	$GameOver.hide()
 	get_tree().call_group("pipes", "queue_free")
+	get_tree().call_group("foods", "queue_free")
+	get_tree().call_group("medicines", "queue_free")
 	pipes.clear()
+	foods.clear()
+	medicines.clear()
 	#generate starting pipes
 	generate_pipes()
+	generate_foods()
+	generate_medicines()
 	$Bird.reset()
 	
 func _input(event):
@@ -48,8 +62,8 @@ func start_game():
 	game_running = true
 	$Bird.flying = true
 	$Bird.flap()
-	#start pipe timer
-	$PipeTimer.start()
+	#start timer
+	start_timers()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -63,11 +77,23 @@ func _process(delta):
 		#move pipes
 		for pipe in pipes:
 			pipe.position.x -= SCROLL_SPEED
+		for food in foods:
+			food.position.x -= SCROLL_SPEED
+		for medicine in medicines:
+			medicine.position.x -= SCROLL_SPEED	
 
 
 func _on_pipe_timer_timeout():
 	generate_pipes()
+
+func _on_food_timer_timeout() -> void:
+	generate_foods()
+	pass
 	
+func _on_medicine_timer_timeout() -> void:
+	generate_medicines()
+	pass
+
 func generate_pipes():
 	var pipe = pipe_scene.instantiate()
 	pipe.position.x = screen_size.x + PIPE_DELAY
@@ -76,10 +102,30 @@ func generate_pipes():
 	pipe.scored.connect(scored)
 	add_child(pipe)
 	pipes.append(pipe)
+
+func generate_foods():
+	var food = food_scene.instantiate()
+	food.position.x = screen_size.x + PIPE_DELAY
+	food.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
+	food.eat.connect(bird_eats)
+	add_child(food)
+	foods.append(food)
+	pass
+
+func generate_medicines():
+	var medicine = medicine_scene.instantiate()
+	medicine.position.x = screen_size.x + PIPE_DELAY
+	medicine.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
+	medicine.recover.connect(bird_recovers)
+	add_child(medicine)
+	medicines.append(medicine)
+	pass
 	
 func scored():
 	score += 1
+	coins += 3
 	$ScoreLabel.text = "SCORE: " + str(score)
+	$CoinsLabel.text = ": " + str(coins)
 
 func check_top():
 	if $Bird.position.y < 0:
@@ -87,15 +133,34 @@ func check_top():
 		stop_game()
 
 func stop_game():
-	$PipeTimer.stop()
+	stop_timers()
 	$GameOver.show()
 	$Bird.flying = false
 	game_running = false
 	game_over = true
 	
+func stop_timers():
+	$PipeTimer.stop()
+	$FoodTimer.stop()
+	$MedicineTimer.stop()
+
+func start_timers():
+	$PipeTimer.start()
+	$FoodTimer.start()
+	$MedicineTimer.start()
+	
+	
 func bird_hit():
 	$Bird.falling = true
 	stop_game()
+	
+func bird_eats():
+	$Bird.scale_up()
+	pass
+	
+func bird_recovers():
+	$Bird.scale_down()
+	pass
 
 func _on_ground_hit():
 	$Bird.falling = false

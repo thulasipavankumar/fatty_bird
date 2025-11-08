@@ -5,18 +5,35 @@ const MAX_VEL : int = 600
 const FLAP_SPEED : int = -500
 var flying : bool = false
 var falling : bool = false
+var fact_scale_factor: float = 1.0
+var original_scale: Vector2
 const START_POS = Vector2(100, 400)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	original_scale = scale
 	reset()
 
 func reset():
+	scale *= 0.5
 	falling = false
 	flying = false
 	position = START_POS
+	reset_scale_character()
 	set_rotation(0)
+
+func scale_up():
+	scale *= 1.25
+	pass
 	
+func reset_scale_character():
+	scale = original_scale
+	pass
+	
+func scale_down():
+	if(scale.x >= 0.40 and scale.y >= 0.40):
+		scale = scale * 0.8
+	pass
 	# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	if flying or falling:
