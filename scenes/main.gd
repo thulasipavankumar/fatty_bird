@@ -218,7 +218,8 @@ func _on_cheat_timeout():
 	print("Cheat expired.")
 
 func bird_eats():
-	$Bird.scale_up()
+	if(!cheat_activated):
+		$Bird.scale_up()
 	pass
 	
 func bird_recovers():
