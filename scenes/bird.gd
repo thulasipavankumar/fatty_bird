@@ -8,7 +8,9 @@ var falling : bool = false
 var fact_scale_factor: float = 1.0
 var original_scale: Vector2
 const START_POS = Vector2(100, 400)
-
+@export var fade_speed := 1.5
+var _fade_timer := 0.0
+var _is_fading := false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	original_scale = scale
@@ -50,6 +52,18 @@ func _physics_process(delta):
 		move_and_collide(velocity * delta)
 	else:
 		$AnimatedSprite2D.stop()
+	if _is_fading:
+		_fade_timer += delta * fade_speed
+		var alpha := 0.65 + 0.35 * sin(_fade_timer * PI)
+		modulate.a = alpha
 		
+func start_cheat_fade() -> void:
+	_is_fading = true
+	_fade_timer = 0.0
+
+func stop_cheat_fade() -> void:
+	_is_fading = false
+	modulate.a = 1.0  # restore normal visibility
+
 func flap():
 	velocity.y = FLAP_SPEED

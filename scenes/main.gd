@@ -19,6 +19,10 @@ var foods: Array
 var medicines: Array
 const PIPE_DELAY : int = 100
 const PIPE_RANGE : int = 200
+var cheat_activated:bool = false
+var _typed_text :String = ""
+var _cheat_codes :Array = ["HEXE","GAMEJAM","LUCIAD"]
+var _cheat_timer  = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -68,6 +72,25 @@ func _input(event):
 					if $Bird.flying:
 						$Bird.flap()
 						check_top()
+	if event is InputEventKey and event.is_pressed() and not event.is_echo():
+		var char = event.as_text()
+		print("char: ",char)
+		if char.length() == 1:
+			_typed_text += char.capitalize()
+			var max_len := 0
+			for code in _cheat_codes:
+				if code.length() > max_len:
+					max_len = code.length()
+			print("Max_len",max_len)
+			print("User entered before: ",_typed_text) 
+			var from = max(0,_typed_text.length()-max_len)
+			_typed_text = _typed_text.substr(from,max_len)
+			print("User entered aftergam: ",_typed_text) 
+			for code in _cheat_codes:
+				if _typed_text.ends_with(code):
+					activate_cheat()
+					break
+			
 
 func start_game():
 	game_running = true
@@ -139,14 +162,14 @@ func scored():
 	$CoinsLabel.text = ": " + str(coins)
 
 func check_top():
+	var bird_falling = false;
 	if $Bird.position.y < 0:
-		$Bird.falling = true
-		stop_game()
+		bird_hit()
 
-func stop_game():
+func stop_game(bird_falling=false):
 	stop_timers()
 	$GameOver.show()
-	$Bird.flying = false
+	$Bird.flying = bird_falling
 	game_running = false
 	game_over = true
 	
@@ -161,11 +184,32 @@ func start_timers():
 	$MedicineTimer.start()
 	
 	
-func bird_hit():
+func bird_hit(bird_falling=true):
 	player_hit_sound.play()
-	$Bird.falling = true
-	stop_game()
+	if(!cheat_activated):
+		$Bird.falling = bird_falling
+		stop_game()
+		
+func activate_cheat():
+	$Bird.start_cheat_fade()
+	cheat_activated = true
+	print("CHEAT ACTIVATED!")
+	# Start/reset timer
+	if _cheat_timer:
+		_cheat_timer.stop()
+	else:
+		_cheat_timer = Timer.new()
+		_cheat_timer.one_shot = true
+		_cheat_timer.wait_time = 10.0
+		_cheat_timer.connect("timeout", Callable(self, "_on_cheat_timeout"))
+		add_child(_cheat_timer)
+	_cheat_timer.start()
 	
+func _on_cheat_timeout():
+	$Bird.stop_cheat_fade()
+	cheat_activated = false
+	print("Cheat expired.")
+
 func bird_eats():
 	$Bird.scale_up()
 	pass
@@ -175,8 +219,9 @@ func bird_recovers():
 	pass
 
 func _on_ground_hit():
-	$Bird.falling = false
-	stop_game()
+	#$Bird.falling = false
+	#stop_game()
+	bird_hit(false)
 
 func _on_game_over_restart():
 	new_game()
