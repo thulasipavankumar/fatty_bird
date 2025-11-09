@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtcv5jc8ixyv0"]
+
+[ext_resource type="Texture2D" uid="uid://c0utpat4wx423" path="res://assets/mushroom.png" id="1_r64ol"]
+[ext_resource type="Script" uid="uid://cchf3vdvs6dfm" path="res://scenes/cheat.gd" id="1_uimmx"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uimmx"]
+radius = 8.927719
+height = 24.0
+
+[node name="CheatArea" type="Area2D" groups=["cheat"]]
+script = ExtResource("1_uimmx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(507.5, 274.5)
+texture = ExtResource("1_r64ol")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(508.5, 277.5)
+shape = SubResource("CapsuleShape2D_uimmx")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

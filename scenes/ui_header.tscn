@@ -17,14 +17,14 @@ texture = ExtResource("2_t1bhu")
 script = ExtResource("1_0ndkp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(680.375, 31.5)
-scale = Vector2(1.191177, 1.3055557)
+position = Vector2(585.00006, 31)
+scale = Vector2(0.8627468, 1)
 texture = ExtResource("1_xvnt0")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_left = 719.0
+offset_left = 623.0
 offset_top = 2.0
-offset_right = 796.0
+offset_right = 700.0
 offset_bottom = 59.0
 theme_override_colors/default_color = Color(0.96862745, 0.5137255, 0.18039216, 1)
 theme_override_font_sizes/normal_font_size = 40
@@ -32,9 +32,9 @@ theme_override_font_sizes/bold_font_size = 40
 text = ": 1"
 
 [node name="HelpButton" type="Button" parent="."]
-offset_left = 809.0
+offset_left = 778.0
 offset_top = 12.0
-offset_right = 839.0
+offset_right = 808.0
 offset_bottom = 46.0
 theme_override_styles/normal = SubResource("StyleBoxTexture_0ndkp")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_n8hvc")

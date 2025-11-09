@@ -3,6 +3,7 @@ extends Node
 @export var pipe_scene : PackedScene
 @export var food_scene : PackedScene
 @export var medicine_scene : PackedScene
+@export var cheat_scene : PackedScene
 @onready var player_hit_sound: AudioStreamPlayer = $player_hit
 
 var game_running : bool
@@ -10,21 +11,22 @@ var game_over : bool
 var instruction_required: bool = true
 var scroll
 var score
-var coins
 const SCROLL_SPEED : int = 4
 var screen_size : Vector2i
 var ground_height : int
 var pipes : Array
 var foods: Array
 var medicines: Array
-const PIPE_DELAY : int = 100
+var cheats: Array
+const PIPE_DELAY : int = 10
 const PIPE_RANGE : int = 200
 var cheat_activated:bool = false
 var _typed_text :String = ""
 var _cheat_codes :Array = ["HEXE","GAMEJAM","LUCIAD"]
 var _cheat_timer  = null
 var is_game_paused:bool = false
-
+var difficulty_timer := 0.0
+var difficulty_scale := 1.0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	screen_size = get_window().size
@@ -41,28 +43,34 @@ func check_show_instructions():
 func new_game():
 	check_show_instructions()
 	#reset variables
-	game_running = false
-	game_over = false
-	score = 0
-	scroll = 0
-	coins = 0
+	reset_variables()
 	$ScoreLabel.text = "SCORE: " + str(score)
-	$CoinsLabel.text = ": " + str(coins)
 	$GameOver.hide()
 	get_tree().call_group("pipes", "queue_free")
 	get_tree().call_group("foods", "queue_free")
 	get_tree().call_group("medicines", "queue_free")
+	get_tree().call_group("cheat","queue_free")
 	pipes.clear()
 	foods.clear()
 	medicines.clear()
+	cheats.clear()
 	#generate starting pipes
 	generate_assets()
 	$Bird.reset()
 	
+func reset_variables():
+	difficulty_timer = 0.0
+	difficulty_scale = 1.0
+	game_running = false
+	game_over = false
+	score = 0
+	scroll = 0
+	pass
 func generate_assets():
 	generate_pipes()
 	generate_foods()
 	generate_medicines()
+	generate_cheats()
 	
 func _input(event):
 	if !game_over && !is_game_paused:
@@ -76,18 +84,16 @@ func _input(event):
 						check_top()
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		var char = event.as_text()
-		print("char: ",char)
+		
 		if char.length() == 1:
 			_typed_text += char.capitalize()
 			var max_len := 0
 			for code in _cheat_codes:
 				if code.length() > max_len:
 					max_len = code.length()
-			print("Max_len",max_len)
-			print("User entered before: ",_typed_text) 
 			var from = max(0,_typed_text.length()-max_len)
 			_typed_text = _typed_text.substr(from,max_len)
-			print("User entered aftergam: ",_typed_text) 
+
 			for code in _cheat_codes:
 				if _typed_text.ends_with(code):
 					activate_cheat()
@@ -109,6 +115,8 @@ func un_pause_game():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if game_running:
+		difficulty_timer += delta
+		difficulty_scale = 1.0 + (difficulty_timer / 30.0)  # gradually increase
 		scroll += SCROLL_SPEED
 		#reset scroll
 		if scroll >= screen_size.x:
@@ -136,37 +144,43 @@ func _on_medicine_timer_timeout() -> void:
 	pass
 
 func generate_pipes():
-	var pipe = pipe_scene.instantiate()
-	pipe.position.x = screen_size.x + PIPE_DELAY
-	pipe.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
+	var pipe =  generateScenes(pipe_scene)
+	pipe.amplitude *= difficulty_scale
+	pipe.speed *= difficulty_scale
 	pipe.hit.connect(bird_hit)
 	pipe.scored.connect(scored)
 	add_child(pipe)
 	pipes.append(pipe)
 
+
 func generate_foods():
-	var food = food_scene.instantiate()
-	food.position.x = screen_size.x + PIPE_DELAY
-	food.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
+	var food = generateScenes(food_scene)
 	food.eat.connect(bird_eats)
 	add_child(food)
 	foods.append(food)
 	pass
 
 func generate_medicines():
-	var medicine = medicine_scene.instantiate()
-	medicine.position.x = screen_size.x + PIPE_DELAY
-	medicine.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
+	var medicine = generateScenes(medicine_scene)
 	medicine.recover.connect(bird_recovers)
 	add_child(medicine)
 	medicines.append(medicine)
+
+func generateScenes(scene_variable):
+	var scene = scene_variable.instantiate()
+	scene.position.x = screen_size.x + PIPE_DELAY
+	scene.position.y = (screen_size.y - ground_height) / 2  + randi_range(-PIPE_RANGE, PIPE_RANGE)
+	return scene
+
+func generate_cheats():
+	var cheat = generateScenes(cheat_scene)
+	cheat.hit.connect(activate_cheat)
+	add_child(cheat)
+	cheats.append(cheat)
 	pass
-	
 func scored():
 	score += 1
-	coins += 3
 	$ScoreLabel.text = "SCORE: " + str(score)
-	$CoinsLabel.text = ": " + str(coins)
 
 func check_top():
 	var bird_falling = false;
@@ -200,6 +214,7 @@ func bird_hit(bird_falling=true):
 func activate_cheat():
 	$Bird.start_cheat_fade()
 	cheat_activated = true
+	$InvisibleMusic.play()
 	print("CHEAT ACTIVATED!")
 	# Start/reset timer
 	if _cheat_timer:
@@ -215,6 +230,7 @@ func activate_cheat():
 func _on_cheat_timeout():
 	$Bird.stop_cheat_fade()
 	cheat_activated = false
+	$InvisibleMusic.stop()
 	print("Cheat expired.")
 
 func bird_eats():
