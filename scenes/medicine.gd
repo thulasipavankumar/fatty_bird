@@ -6,12 +6,12 @@ signal recover
 @export var y_max: float = 100.0
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if !enable_random:
+		return
 	randomize_potion_position()
 	pass # Replace with function body.
 
 func randomize_potion_position():
-	if !enable_random:
-		return
 	randomize()
 	var sprites :Array = []
 	var collisions :Array = []

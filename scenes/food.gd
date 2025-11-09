@@ -6,11 +6,11 @@ extends Area2D
 signal eat
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	if !enable_random:
+		return
 	pass # Replace with function body.
 
 func randomize_food_position():
-	if !enable_random:
-		return
 	randomize()
 	var sprites :Array = []
 	var collisions :Array = []
