@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://g6bn84xha88u"]
+
+[ext_resource type="Script" uid="uid://c1mssyxqxnrod" path="res://scenes/ui_header.gd" id="1_0ndkp"]
+[ext_resource type="Texture2D" uid="uid://dfuofh4nwer0n" path="res://assets/bird1.png" id="1_xvnt0"]
+[ext_resource type="Texture2D" uid="uid://cxdnenwhr5coj" path="res://assets/info-line-icon.png" id="2_t1bhu"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_0ndkp"]
+texture = ExtResource("2_t1bhu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_n8hvc"]
+texture = ExtResource("2_t1bhu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7tj8y"]
+texture = ExtResource("2_t1bhu")
+
+[node name="ui-header" type="CanvasLayer"]
+script = ExtResource("1_0ndkp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(680.375, 31.5)
+scale = Vector2(1.191177, 1.3055557)
+texture = ExtResource("1_xvnt0")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = 719.0
+offset_top = 2.0
+offset_right = 796.0
+offset_bottom = 59.0
+theme_override_colors/default_color = Color(0.96862745, 0.5137255, 0.18039216, 1)
+theme_override_font_sizes/normal_font_size = 40
+theme_override_font_sizes/bold_font_size = 40
+text = ": 1"
+
+[node name="HelpButton" type="Button" parent="."]
+offset_left = 809.0
+offset_top = 12.0
+offset_right = 839.0
+offset_bottom = 46.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_0ndkp")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_n8hvc")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7tj8y")
+
+[connection signal="pressed" from="HelpButton" to="." method="_on_help_button_pressed"]

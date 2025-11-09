@@ -23,6 +23,7 @@ var cheat_activated:bool = false
 var _typed_text :String = ""
 var _cheat_codes :Array = ["HEXE","GAMEJAM","LUCIAD"]
 var _cheat_timer  = null
+var is_game_paused:bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,6 +34,7 @@ func _ready():
 func check_show_instructions():
 	if instruction_required == true:
 		$Instructions.show()
+		is_game_paused = true
 	else:
 		$Instructions.hide()
 	
@@ -63,7 +65,7 @@ func generate_assets():
 	generate_medicines()
 	
 func _input(event):
-	if game_over == false && instruction_required == false:
+	if !game_over && !is_game_paused:
 		if event is InputEventMouseButton:
 			if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 				if  game_running == false:
@@ -98,6 +100,11 @@ func start_game():
 	$Bird.flap()
 	#start timer
 	start_timers()
+
+func pause_game():
+	pass
+func un_pause_game():
+	pass
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -219,15 +226,23 @@ func bird_recovers():
 	pass
 
 func _on_ground_hit():
-	#$Bird.falling = false
-	#stop_game()
 	bird_hit(false)
 
 func _on_game_over_restart():
 	new_game()
 
-
 func _on_instructions_instructions() -> void:
 	instruction_required = false
-	new_game()
-	pass # Replace with function body.
+	if is_game_paused:
+		is_game_paused = false
+		new_game()
+	else:
+		check_show_instructions()
+
+
+func _on_uiheader_help() -> void:
+	return 
+	print('help pressed')
+	instruction_required = true
+	check_show_instructions()
+	
