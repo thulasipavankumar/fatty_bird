@@ -1,11 +1,29 @@
 extends Area2D
 @onready var eat_music: AudioStreamPlayer = $eat_sound
-
+@export var y_min: float = -100.0
+@export var y_max: float = 100.0
+@export var enable_random: bool = true
 signal eat
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
 
+func randomize_food_position():
+	if !enable_random:
+		return
+	randomize()
+	var sprites :Array = []
+	var collisions :Array = []
+	for child in get_children():
+		if child is Sprite2D:
+			sprites.append(child)
+		elif child is CollisionShape2D:
+			collisions.append(child)
+	for i in sprites.size():
+		var rand_y = randf_range(y_min,y_max)
+		sprites[i].position.y = rand_y
+		if i < collisions.size():
+			collisions[i].position.y = rand_y
 
 func _on_body_entered(body: Node2D) -> void:
 	eat.emit()
