@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://blj5g47uwo7m0"]
+[gd_scene load_steps=15 format=3 uid="uid://blj5g47uwo7m0"]
 
 [ext_resource type="Script" uid="uid://c2voik2e2oh0w" path="res://scenes/main.gd" id="1_5g6v2"]
 [ext_resource type="Texture2D" uid="uid://d38ceuoo614k4" path="res://assets/bg.png" id="1_s2jh7"]
@@ -6,19 +6,21 @@
 [ext_resource type="PackedScene" uid="uid://b6xt1pam4caki" path="res://scenes/bird.tscn" id="3_4ap2d"]
 [ext_resource type="PackedScene" uid="uid://d2ort7tfi33lg" path="res://scenes/ground.tscn" id="4_kx1e6"]
 [ext_resource type="PackedScene" uid="uid://snrvq7jkapgf" path="res://scenes/game_over.tscn" id="6_yk7bg"]
-[ext_resource type="PackedScene" uid="uid://d1r2pesmoi04c" path="res://scenes/coins.tscn" id="7_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://pq16ld3tc264" path="res://scenes/food.tscn" id="8_tipki"]
 [ext_resource type="PackedScene" uid="uid://6abmpxwjk5xr" path="res://scenes/medicine.tscn" id="9_85g3d"]
 [ext_resource type="AudioStream" uid="uid://47dorkxgly5v" path="res://assets/sounds/background.mp3" id="10_choun"]
+[ext_resource type="PackedScene" uid="uid://dtcv5jc8ixyv0" path="res://scenes/cheat.tscn" id="11_a8y0u"]
 [ext_resource type="AudioStream" uid="uid://5gmaijf76iqg" path="res://assets/sounds/game_over.ogg" id="11_ya4ey"]
 [ext_resource type="PackedScene" uid="uid://d4auwetbv5jxv" path="res://scenes/instructions.tscn" id="12_eb6dy"]
 [ext_resource type="PackedScene" uid="uid://g6bn84xha88u" path="res://scenes/ui_header.tscn" id="12_trceg"]
+[ext_resource type="AudioStream" uid="uid://ixvf7kh2a87k" path="res://assets/sounds/invisible.ogg" id="13_trceg"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_5g6v2")
 pipe_scene = ExtResource("2_h58j0")
 food_scene = ExtResource("8_tipki")
 medicine_scene = ExtResource("9_85g3d")
+cheat_scene = ExtResource("11_a8y0u")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture = ExtResource("1_s2jh7")
@@ -46,17 +48,6 @@ text = "SCORE: 0"
 
 [node name="GameOver" parent="." instance=ExtResource("6_yk7bg")]
 
-[node name="Coins" parent="." instance=ExtResource("7_o6xl0")]
-
-[node name="CoinsLabel" type="Label" parent="."]
-z_index = 1
-offset_left = 584.0
-offset_right = 628.0
-offset_bottom = 113.0
-theme_override_font_sizes/font_size = 40
-text = ": 0
-"
-
 [node name="Food" parent="." instance=ExtResource("8_tipki")]
 position = Vector2(634, 150)
 
@@ -77,9 +68,17 @@ parameters/looping = false
 [node name="player_hit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_ya4ey")
 
+[node name="CheatArea" parent="." instance=ExtResource("11_a8y0u")]
+
 [node name="Instructions" parent="." instance=ExtResource("12_eb6dy")]
 
 [node name="ui-header" parent="." instance=ExtResource("12_trceg")]
+
+[node name="InvisibleMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("13_trceg")
+volume_db = -17.174
+pitch_scale = 0.88
+parameters/looping = true
 
 [connection signal="hit" from="Ground" to="." method="_on_ground_hit"]
 [connection signal="timeout" from="PipeTimer" to="." method="_on_pipe_timer_timeout"]
