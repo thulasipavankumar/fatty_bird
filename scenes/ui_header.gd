@@ -10,7 +10,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+func health_effect():
 
+	pass
 
 
 func _on_help_button_pressed() -> void:

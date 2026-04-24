@@ -11,12 +11,17 @@ const START_POS = Vector2(100, 400)
 @export var fade_speed := 1.5
 var _fade_timer := 0.0
 var _is_fading := false
+@export var max_health := 100
+var health := max_health
+signal health_changed(new_health)
+signal died
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	original_scale = scale
 	reset()
 
 func reset():
+	health = max_health
 	scale *= 0.5
 	falling = false
 	flying = false
@@ -67,3 +72,9 @@ func stop_cheat_fade() -> void:
 
 func flap():
 	velocity.y = FLAP_SPEED
+	
+func take_damage(amount: int):
+	health = max(health - amount, 0)
+	emit_signal("health_changed", health)
+	if health <= 0:
+		died.emit()

@@ -39,9 +39,18 @@ func check_show_instructions():
 		is_game_paused = true
 	else:
 		$Instructions.hide()
+		
+func _on_bird_health_changed(new_health):
+	$"ui-header/HealthBar".value = new_health
+
+func _on_bird_died():
+	stop_game()
 	
 func new_game():
 	check_show_instructions()
+	$Bird.health_changed.connect(_on_bird_health_changed)
+	$Bird.died.connect(_on_bird_died)
+	$"ui-header/HealthBar".value = 100
 	#reset variables
 	reset_variables()
 	$ScoreLabel.text = "SCORE: " + str(score)
@@ -84,7 +93,6 @@ func _input(event):
 						check_top()
 	if event is InputEventKey and event.is_pressed() and not event.is_echo():
 		var char = event.as_text()
-		
 		if char.length() == 1:
 			_typed_text += char.capitalize()
 			var max_len := 0
@@ -93,12 +101,10 @@ func _input(event):
 					max_len = code.length()
 			var from = max(0,_typed_text.length()-max_len)
 			_typed_text = _typed_text.substr(from,max_len)
-
 			for code in _cheat_codes:
 				if _typed_text.ends_with(code):
 					activate_cheat()
 					break
-			
 
 func start_game():
 	game_running = true
@@ -147,6 +153,7 @@ func generate_pipes():
 	var pipe =  generateScenes(pipe_scene)
 	pipe.amplitude *= difficulty_scale
 	pipe.speed *= difficulty_scale
+	pipe.time = randf_range(0, TAU)
 	pipe.hit.connect(bird_hit)
 	pipe.scored.connect(scored)
 	add_child(pipe)
@@ -198,18 +205,23 @@ func stop_timers():
 	$PipeTimer.stop()
 	$FoodTimer.stop()
 	$MedicineTimer.stop()
+	$MushroomTimer.stop()
 
 func start_timers():
 	$PipeTimer.start()
 	$FoodTimer.start()
 	$MedicineTimer.start()
+	$MushroomTimer.start()
 	
 	
 func bird_hit(bird_falling=true):
 	player_hit_sound.play()
-	if(!cheat_activated):
-		$Bird.falling = bird_falling
-		stop_game()
+	if(cheat_activated):
+		return 
+	
+	#$Bird.falling = bird_falling
+	#stop_game()
+	$Bird.take_damage(20)
 		
 func activate_cheat():
 	$Bird.start_cheat_fade()
@@ -263,3 +275,8 @@ func _on_uiheader_help() -> void:
 	instruction_required = true
 	check_show_instructions()
 	
+
+
+func _on_mushroom_timer_timeout() -> void:
+	generate_cheats()
+	pass # Replace with function body.
